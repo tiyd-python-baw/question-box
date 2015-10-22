@@ -11,7 +11,7 @@ def question_detail(request, question_pk):
     #question = Question.objects.get(pk=question_pk)
     question = get_object_or_404(Question, pk=question_pk)
     answers = Answers.objects.filter(question=question).all()
-    return render (request, 'box/templates/question_detail.html', {'question':question,
+    return render (request, 'box/question_detail.html', {'question':question,
                                                     'answers': answers})
 
 
