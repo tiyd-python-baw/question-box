@@ -2,20 +2,20 @@
 {% block content %}
 
 
-<p> At {{ question.timestamp }}, {{ question.user }} asked: <br>
 {{ question.title }}<br>
 {{ question.text }}<p>
+  <p>Asked by {{ question.user }} at {{ question.timestamp }}<br>
 UPVOTE BUTTON -- DOWNVOTE BUTTON
 
 
-{% for answer in answers %}
+<br><br>{% for answer in answers %}
 -- {{ answer.text }}<br><br>
 -{{ answer.user }}({{ answer.user.score.points }}) at {{ answer.timestamp }}<br>
 UPVOTE BUTTON -- DOWNVOTE BUTTON
 
 
 {% endfor %}
-
+<br><br>
 Make a new answer here
 
 
