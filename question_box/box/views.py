@@ -2,4 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 def question_detail(request, question_id):
-    return render (request, 'question_detail.html')
+    question = Question.objects.get(id=question_id)
+    answers = Answers.objects.filter(question=question).all()
+    return render (request, 'question_detail.html', {'question':question,
+                                                    'answers': answers})
