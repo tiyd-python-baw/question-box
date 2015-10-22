@@ -18,4 +18,5 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^question/(?P<click_pk>\d*)?$', views.question_detail, name = 'question_detail'),
 ]
