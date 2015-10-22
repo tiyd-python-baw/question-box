@@ -5,13 +5,17 @@
 {{ question.title }}<br>
 {{ question.text }}<p>
   <p>Asked by {{ question.user }} at {{ question.timestamp }}<br>
-UPVOTE BUTTON -- DOWNVOTE BUTTON
-
 
 <br><br>{% for answer in answers %}
 -- {{ answer.text }}<br><br>
 -{{ answer.user }}({{ answer.user.score.points }}) at {{ answer.timestamp }}<br>
-UPVOTE BUTTON -- DOWNVOTE BUTTON
+Score: {{ answer.points_a }}
+<form method="post">
+  {% csrf_token %}
+  <button name="vote" type="submit" value="upvote">UPVOTE</button>
+  <button name="vote" type="submit" value="downvote">DOWNVOTE</button>
+  <input type="hidden" name="answer_object" value={{ answer.pk }}>
+</form>
 
 
 {% endfor %}

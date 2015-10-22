@@ -26,7 +26,17 @@ class AllQuestionsView(ListView):
 def question_detail(request, question_pk):
     #question = Question.objects.get(pk=question_pk)
     question = get_object_or_404(Question, pk=question_pk)
-    answers = Answers.objects.filter(question=question).all()
+    answers = Answers.objects.filter(question=question).order_by('-points_a').all()
+    if request.method == 'POST':
+        answer = Answers.objects.get(pk=request.POST['answer_object'])
+        if request.POST['vote'] == 'upvote':
+            answer.points_a +=1
+            answer.save()
+        elif request.POST['vote'] =='downvote':
+            answer.points_a -=1
+            answer.save()
+        return render(request, 'box/question_detail.html', {'question':question,
+                                                        'answers': answers})
     return render (request, 'box/question_detail.html', {'question':question,
                                                     'answers': answers})
 
