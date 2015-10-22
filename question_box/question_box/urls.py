@@ -18,7 +18,7 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^question/(?P<question_id>\d*)?$', views.question_detail, name = 'question_detail'),
+    url(r'^question/(?P<question_id>\d*)?$', 'box.views.question_detail', name = 'question_detail'),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login',
        {'template_name': 'question_box/login.html'}, name='login'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout_then_login', name='logout'),
