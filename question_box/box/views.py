@@ -28,7 +28,7 @@ def question_detail(request, question_pk):
     question = get_object_or_404(Question, pk=question_pk)
     answers = Answers.objects.filter(question=question).order_by('-points_a').all()
     if request.method == 'POST':
-        if request.user.is_authenticated():
+        #if request.user.is_authenticated():
             vote = request.POST.get('vote', False)
             answer_text = request.POST.get('new_answer', False)
             if vote == 'upvote':
