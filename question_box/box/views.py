@@ -1,7 +1,23 @@
 from django.shortcuts import render
+from .models import Question, Answers, Score
+from django.views.generic.list import ListView
 from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
+
+class AllQuestionsView(ListView):
+    '''Used to list all questions on the Home page'''
+    template_name = 'questionhome.html'
+    context_object_name = 'questions'
+    paginate_by = 20
+
+    model = Question
+
+    def get_queryset(self):
+        preload = Question.objects.all()
+        return preload.order_by('-timestamp')
+
+
 def question_detail(request, question_id):
     question = Question.objects.get(id=question_id)
     answers = Answers.objects.filter(question=question).all()
