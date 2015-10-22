@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import Question, Answers, Score
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
-
+from datetime import datetime
 
 
 # Create your views here.
@@ -28,17 +28,35 @@ def question_detail(request, question_pk):
     question = get_object_or_404(Question, pk=question_pk)
     answers = Answers.objects.filter(question=question).order_by('-points_a').all()
     if request.method == 'POST':
-        answer = Answers.objects.get(pk=request.POST['answer_object'])
-        if request.POST['vote'] == 'upvote':
-            answer.points_a +=1
-            answer.save()
-        elif request.POST['vote'] =='downvote':
-            answer.points_a -=1
-            answer.save()
-        return render(request, 'box/question_detail.html', {'question':question,
+        if request.user.is_authenticated():
+            vote = request.POST.get('vote', False)
+            answer_text = request.POST.get('new_answer', False)
+            if vote == 'upvote':
+                answer = Answers.objects.get(pk=request.POST['answer_object'])
+                answer.points_a +=1
+                answer.save()
+                answer.user.score.points +=10
+                answer.user.score.save()
+            elif vote =='downvote':
+                answer = Answers.objects.get(pk=request.POST['answer_object'])
+                answer.points_a -=1
+                answer.save()
+                answer.user.score.points -=5
+                answer.user.score.save()
+                #request.user.score.points -=1
+                #request.user.score.save()
+            else:
+                new_answer = Answers(text=answer_text,
+                                    timestamp=datetime.now(),
+                                    question = question,
+                                    user=User.objects.get(username='andrew'))
+                new_answer.save()
+            return render(request, 'box/question_detail.html', {'question':question,
                                                         'answers': answers})
     return render (request, 'box/question_detail.html', {'question':question,
                                                     'answers': answers})
+
+
 
 
 def register_user(request):
