@@ -1,0 +1,7 @@
+{% extends "question_box/base.html" %}
+
+{% block content %}
+  {% for question in questions %}
+  <p>  {{ question.title }} - {{ question.points_q }}</p>
+  {% endfor %}
+{% endblock %}
