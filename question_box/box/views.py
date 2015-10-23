@@ -47,7 +47,7 @@ def question_detail(request, question_pk):
     question = get_object_or_404(Question, pk=question_pk)
     answers = Answers.objects.filter(question=question).order_by('-points_a').all()
     if request.method == 'POST':
-        #if request.user.is_authenticated():
+        if request.user.is_authenticated():
             vote = request.POST.get('vote', False)
             answer_text = request.POST.get('new_answer', False)
             if vote == 'upvote':
@@ -62,8 +62,8 @@ def question_detail(request, question_pk):
                 answer.save()
                 answer.user.score.points -=5
                 answer.user.score.save()
-                #request.user.score.points -=1
-                #request.user.score.save()
+                request.user.score.points -=1
+                request.user.score.save()
             else:
                 new_answer = Answers(text=answer_text,
                                     timestamp=datetime.now(),
