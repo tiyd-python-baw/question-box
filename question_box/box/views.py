@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from .models import Question, Answers, Score
-from .forms import NewQuestion
+from .forms import NewQuestionForm
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -31,7 +31,7 @@ class UserPage(ListView):
 
 class AllQuestionsView(ListView):
     '''Used to list all questions on the Home page'''
-    template_name = 'questionhome.html'
+    template_name = 'box/questionhome.html'
     context_object_name = 'questions'
     paginate_by = 20
 
@@ -97,22 +97,15 @@ def register_user(request):
 
 @login_required
 def new_question(request):
-    form_class = NewQuestion
-
     if request.method == 'POST':     # want to post a new question
-        form = form_class(data=request.POST)
+        form = NewQuestionForm(request.POST)
 
         if form.is_valid():
-            title = request.POST.get('title', '')
-            text = request.POST.get('text', '')  # needs (commit=False)
-#            user = request.user     # may be some magic here!
-
-            question = Question(
-                title=title,
-                text=text
-            )
+            question = form.save(commit=False)
+            question.user = request.user
             question.save()
 
-            return redirect('newquestion')
-
-    return render(request, 'box/newquestion.html', {'form': form_class})
+            return redirect('questions')
+    else:
+        form = NewQuestionForm()
+    return render(request, 'box/newquestion.html', {'form': form})
