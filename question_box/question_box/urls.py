@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-
+from box.views import UserPage
 
 
 urlpatterns = [
@@ -25,4 +25,5 @@ urlpatterns = [
        {'template_name': 'question_box/login.html'}, name='login'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout_then_login', name='logout'),
     url(r'^register', 'box.views.register_user', name='register_user'),
+    url(r'^home/(?P<pk>[\w.]+)', UserPage.as_view(), name='home_page'),
 ]
