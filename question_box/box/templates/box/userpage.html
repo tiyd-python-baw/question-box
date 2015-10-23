@@ -3,12 +3,13 @@
 {% block content %}
 <h1>{{view.user}}</h1>
 <h3>{{view.points}}</h3>
+<p>{{view.user.email}}</p>
 <ul>
 {% for object in q_a %}
   {% if object.title %}
   <li><a href="{% url 'question_detail' object.pk %}">{{object.title}}</a>{{object.timestamp}}</li>
   {% else %}
-  <li>Answer {{object.text}}{{object.timestamp}}</li>
+  <li>Answer to <a href="{% url 'question_detail' object.question.pk %}">{{object.question.title}}</a> at {{object.timestamp}}</li>
   {% endif %}
 {% endfor %}
 </ul>
