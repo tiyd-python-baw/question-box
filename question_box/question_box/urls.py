@@ -24,5 +24,6 @@ urlpatterns = [
        {'template_name': 'question_box/login.html'}, name='login'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout_then_login', name='logout'),
     url(r'^register', 'box.views.register_user', name='register_user'),
-    url(r'^home', views.AllQuestionViews.as_view(), name='questions')
+    url(r'^home', views.AllQuestionViews.as_view(), name='questions'),
+    url(r'^new', views.NewQuestion.as_view(), name='newquestion')
 ]

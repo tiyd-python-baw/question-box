@@ -1,10 +1,13 @@
-from django.shortcuts import render
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
 from .models import Question, Answers, Score
 from .forms import NewQuestion
 from django.views.generic.list import ListView
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+
 
 class AllQuestionsView(ListView):
     '''Used to list all questions on the Home page'''
@@ -22,7 +25,7 @@ class AllQuestionsView(ListView):
 def question_detail(request, question_id):
     question = Question.objects.get(id=question_id)
     answers = Answers.objects.filter(question=question).all()
-    return render (request, 'question_detail.html', {'question':question,
+    return render(request, 'question_detail.html', {'question': question,
                                                     'answers': answers})
 
 
@@ -45,15 +48,22 @@ def register_user(request):
 
 @login_required
 def new_question(request):
+    form_class = NewQuestion
+
     if request.method == 'POST':     # want to post a new question
-        form = NewQuestion(request.POST)
+        form = form_class(data=request.POST)
 
         if form.is_valid():
-            title = request.POST['title']
-            title.save()
-            text = request.POST['text']
-            text.save()
-            user = request.user
-            user.save()
+            title = request.POST.get('title', '')
+            text = request.POST.get('text', '')  # needs (commit=False)
+#            user = request.user     # may be some magic here!
 
-    return render(request, 'question_detail.html', {'form': form})
+            question = Question(
+                title=title,
+                text=text
+            )
+            question.save()
+
+            return redirect('newquestion')
+
+    return render(request, 'box/newquestion.html', {'form': form_class})
