@@ -21,11 +21,12 @@ def generate_questions():
     import json
     from faker import Faker
     import random
+    from .list_gen import q_list
     fake = Faker()
     questions=[]
-    for _ in range(50):
-        question = {'fields':{'title':'A title',
-                            'text':'Some text',
+    for x in range(50):
+        question = {'fields':{'title':q_list[x],
+                            'text':fake.bs(),
                             'timestamp':str(fake.date_time_this_year()),
                             'user': random.choice(range(1,51)),
                             },
@@ -41,7 +42,7 @@ def generate_answers():
     fake = Faker()
     answers = []
     for _ in range(50):
-        answer = {'fields':{'text':'Answer text',
+        answer = {'fields':{'text':fake.bs(),
                             'timestamp':str(fake.date_time_this_year()),
                             'user': random.choice(range(1,51)),
                             'question':random.choice(range(1,51))
@@ -54,5 +55,5 @@ def generate_answers():
 class Command(BaseCommand):
     def handle(self, *args, **options):
         generate_users()
-        generate_questions()
-        generate_answers()
+        # generate_questions()
+        # generate_answers()

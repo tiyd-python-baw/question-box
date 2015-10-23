@@ -5,7 +5,7 @@
 
 {{ question.title }}<br>
 {{ question.text }}<p>
-  <p>Asked by {{ question.user }} at {{ question.timestamp }}<br>
+  <p>Asked by <a href="{% url 'home_page' question.user.username %}">{{ question.user }}</a> at {{ question.timestamp }}<br>
 
 <br><br>{% for answer in answers %}
 -- {{ answer.text }}<br><br>

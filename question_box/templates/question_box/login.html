@@ -7,7 +7,7 @@
 {% bootstrap_messages %}
 {% bootstrap_styles theme='slate' type='css'%}
 {# {% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/login.css" %}" />#}
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="https://bootswatch.com/superhero/bootstrap.css" />
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="https://bootswatch.com/slate/bootstrap.css" />
 {{ form.media }}
 {% endblock %}
 
@@ -47,7 +47,16 @@
 </p>
 {% endif %}
 <p>Welcome!</p>
-
+<style media="screen" type="text/css">
+body { padding-top: 60px; padding-left: 10px}
+</style>
+<nav class="navbar navbar-default navbar-fixed-top">
+<ul class="nav nav-pills">
+<li><a href="{% url 'register_user' %}" class="btn btn-success">Register</a></li>
+<li><a href="{% url 'questions' %}" class="btn btn-warning">View Questions</a></li>
+<li><span class="btn btn-default">Browsing anonymously</span></li>
+</ul>
+</nav>
 <form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
   <div class="form-row">
     {{ form.username.errors }}

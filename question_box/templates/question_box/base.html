@@ -13,6 +13,26 @@
   {% bootstrap_styles theme='slate' type='css'%}
 </head>
 <body>
+<style media="screen" type="text/css">
+body { padding-top: 60px; padding-left: 10px}
+</style>
+<nav class="navbar navbar-default navbar-fixed-top">
+<ul class="nav nav-pills">
+  {%if user.is_authenticated %}
+  <li><a href="{% url 'home_page' user.username %}" class="btn btn-info">Home</a></li>
+  <li><a href="{% url 'questions' %}" class="btn btn-warning">All Questions</a></li>
+  <li><a href="{% url 'newquestion' %}" class="btn btn-success">New Question</a></li>
+  <li><a href="{% url 'logout' %}" class="btn btn-danger">Logout</a></li>
+  <li><span class="btn btn-default">Signed in as {{user.username}} </span></li>
+
+  {% else %}
+    <li><a href="{% url 'login' %}" class="btn btn-info">Login</a></li>
+    <li><a href="{% url 'register_user' %}" class="btn btn-success">Register</a></li>
+    <li><a href="{% url 'questions' %}" class="btn btn-warning">View Questions</a></li>
+    <li><span class="btn btn-default">Browsing anonymously</span></li>
+{% endif %}
+  </ul>
+</nav>
   {% block content %}
   {% endblock %}
 <footer>A BAW Production</footer>
