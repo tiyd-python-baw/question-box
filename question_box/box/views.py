@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import Question, Answers, Score
+from .forms import NewQuestion
 from django.views.generic.list import ListView
 from django.contrib.auth.forms import UserCreationForm
 
@@ -40,3 +41,19 @@ def register_user(request):
     else:
         form = UserCreationForm()
     return render(request, 'box/register.html', {'form': form})
+
+
+@login_required
+def new_question(request):
+    if request.method == 'POST':     # want to post a new question
+        form = NewQuestion(request.POST)
+
+        if form.is_valid():
+            title = request.POST['title']
+            title.save()
+            text = request.POST['text']
+            text.save()
+            user = request.user
+            user.save()
+
+    return render(request, 'question_detail.html', {'form': form})
