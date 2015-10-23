@@ -1,7 +1,10 @@
 {% extends "question_box/base.html" %}
-
+{% load bootstrap3 %}
 {% block content %}
+<ul>
   {% for question in questions %}
-  <p>  {{ question.title }} - {{ question.points_q }}</p>
+  <li>  <a href="{% url 'question_detail' question.pk %}">{{ question.title }}</a> - {{ question.points_q }} points</li>
   {% endfor %}
+</ul>
+{% bootstrap_pagination page_obj %}
 {% endblock %}

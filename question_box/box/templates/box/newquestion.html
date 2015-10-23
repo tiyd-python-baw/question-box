@@ -1,11 +1,10 @@
 {% extends "question_box/base.html" %}
 
 {% block content %}
-
+<br>
 <form role='form' method="POST" action="{% url 'newquestion' %}">
     {% csrf_token %}
     {{ form.as_p }}
-<br>
  <button type="submit">Submit New Question</button>
 
 </form>
