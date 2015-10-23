@@ -2,9 +2,15 @@
 {% load bootstrap3 %}
 {% block content %}
 <h1>{{view.user}}</h1>
+<h3>{{view.points}}</h3>
 <ul>
 {% for object in q_a %}
-  <li>{{object}}{{object.timestamp}}</li>
+  {% if object.title %}
+  <li><a href="{% url 'question_detail' object.pk %}">{{object.title}}</a>{{object.timestamp}}</li>
+  {% else %}
+  <li>Answer {{object.text}}{{object.timestamp}}</li>
+  {% endif %}
 {% endfor %}
 </ul>
+{% bootstrap_pagination page_obj %}
 {% endblock %}

@@ -7,7 +7,7 @@
 
 <br><br>{% for answer in answers %}
 -- {{ answer.text }}<br><br>
--{{ answer.user }}({{ answer.user.score.points }}) at {{ answer.timestamp }}<br>
+-<a href="{% url 'home_page' answer.user.username %}">{{ answer.user }}</a>({{ answer.user.score.points }}) at {{ answer.timestamp }}<br>
 Score: {{ answer.points_a }}
 <form method="post">
   {% csrf_token %}

@@ -5,14 +5,10 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import Question, Answers, Score
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
-<<<<<<< HEAD
 from django.contrib.auth import authenticate, login
 from itertools import chain
 from django.contrib.auth.decorators import login_required
-
-=======
 from datetime import datetime
->>>>>>> 39e6d7f87b25f1ab2769c8109cefeda55d182038
 
 
 # Create your views here.
@@ -24,6 +20,7 @@ class UserPage(ListView):
 
     def get_queryset(self):
         self.user = get_object_or_404(User, username=self.kwargs['pk'])
+        self.points = self.user.score.points
         return sorted(chain(self.user.question_set.all(),self.user.answers_set.all()),key=lambda x: x.timestamp,reverse=True)
 
 
@@ -66,7 +63,7 @@ def question_detail(request, question_pk):
                 new_answer = Answers(text=answer_text,
                                     timestamp=datetime.now(),
                                     question = question,
-                                    user=User.objects.get(username='andrew'))
+                                    user=request.user)
                 new_answer.save()
             return render(request, 'box/question_detail.html', {'question':question,
                                                         'answers': answers})
@@ -86,7 +83,7 @@ def register_user(request):
             user = authenticate(username=user.username,
                                 password=request.POST['password1'])
             login(request, user)
-            #return redirect('home_page', request.user.username)
+            return redirect('home_page', request.user.username)
 
     else:
         form = UserCreationForm()
