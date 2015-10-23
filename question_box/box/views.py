@@ -2,11 +2,28 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from .models import Question, Answers, Score
 from .forms import NewQuestion
-from django.views.generic.list import ListView
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+
+from django.views.generic import ListView
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
+from itertools import chain
+from datetime import datetime
+
+
+# Create your views here.
+
+class UserPage(ListView):
+    template_name = 'box/userpage.html'
+    context_object_name = 'q_a'
+    paginate_by = 20
+
+    def get_queryset(self):
+        self.user = get_object_or_404(User, username=self.kwargs['pk'])
+        return sorted(chain(self.user.question_set.all(),self.user.answers_set.all()),key=lambda x: x.timestamp,reverse=True)
 
 
 class AllQuestionsView(ListView):
@@ -22,11 +39,40 @@ class AllQuestionsView(ListView):
         return preload.order_by('-timestamp')
 
 
-def question_detail(request, question_id):
-    question = Question.objects.get(id=question_id)
-    answers = Answers.objects.filter(question=question).all()
-    return render(request, 'question_detail.html', {'question': question,
+def question_detail(request, question_pk):
+    #question = Question.objects.get(pk=question_pk)
+    question = get_object_or_404(Question, pk=question_pk)
+    answers = Answers.objects.filter(question=question).order_by('-points_a').all()
+    if request.method == 'POST':
+        #if request.user.is_authenticated():
+            vote = request.POST.get('vote', False)
+            answer_text = request.POST.get('new_answer', False)
+            if vote == 'upvote':
+                answer = Answers.objects.get(pk=request.POST['answer_object'])
+                answer.points_a +=1
+                answer.save()
+                answer.user.score.points +=10
+                answer.user.score.save()
+            elif vote =='downvote':
+                answer = Answers.objects.get(pk=request.POST['answer_object'])
+                answer.points_a -=1
+                answer.save()
+                answer.user.score.points -=5
+                answer.user.score.save()
+                #request.user.score.points -=1
+                #request.user.score.save()
+            else:
+                new_answer = Answers(text=answer_text,
+                                    timestamp=datetime.now(),
+                                    question = question,
+                                    user=User.objects.get(username='andrew'))
+                new_answer.save()
+            return render(request, 'box/question_detail.html', {'question':question,
+                                                        'answers': answers})
+    return render (request, 'box/question_detail.html', {'question':question,
                                                     'answers': answers})
+
+
 
 
 def register_user(request):

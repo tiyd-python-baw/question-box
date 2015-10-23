@@ -15,15 +15,17 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from box import views
+from box.views import UserPage, NewQuestion, AllQuestionsView
+
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^question/(?P<question_id>\d*)?$', 'box.views.question_detail', name = 'question_detail'),
+    url(r'^question/(?P<question_pk>\d*)?$', 'box.views.question_detail', name = 'question_detail'),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login',
        {'template_name': 'question_box/login.html'}, name='login'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout_then_login', name='logout'),
     url(r'^register', 'box.views.register_user', name='register_user'),
-    url(r'^home', views.AllQuestionViews.as_view(), name='questions'),
-    url(r'^new', views.NewQuestion.as_view(), name='newquestion')
+    url(r'^new', NewQuestion.as_view(), name='newquestion'),
+    url(r'^home/(?P<pk>[\w.]+)', UserPage.as_view(), name='home_page'),
+    url(r'^/$', AllQuestionViews.as_view(), name='questions'),
 ]
