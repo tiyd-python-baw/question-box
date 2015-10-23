@@ -1,18 +1,17 @@
-from django.shortcuts import render
-from .models import Question, Answers, Score
-from django.views.generic import ListView
-from django.contrib.auth.forms import UserCreationForm
-from .models import Question, Answers, Score
-from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404
-<<<<<<< HEAD
 from django.contrib.auth import authenticate, login
-from itertools import chain
+from django.shortcuts import render, redirect
+from .models import Question, Answers, Score
+from .forms import NewQuestion
 from django.contrib.auth.decorators import login_required
 
-=======
+# Create your views here.
+
+from django.views.generic import ListView
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
+from itertools import chain
 from datetime import datetime
->>>>>>> 39e6d7f87b25f1ab2769c8109cefeda55d182038
 
 
 # Create your views here.
@@ -91,3 +90,26 @@ def register_user(request):
     else:
         form = UserCreationForm()
     return render(request, 'box/register.html', {'form': form})
+
+
+@login_required
+def new_question(request):
+    form_class = NewQuestion
+
+    if request.method == 'POST':     # want to post a new question
+        form = form_class(data=request.POST)
+
+        if form.is_valid():
+            title = request.POST.get('title', '')
+            text = request.POST.get('text', '')  # needs (commit=False)
+#            user = request.user     # may be some magic here!
+
+            question = Question(
+                title=title,
+                text=text
+            )
+            question.save()
+
+            return redirect('newquestion')
+
+    return render(request, 'box/newquestion.html', {'form': form_class})

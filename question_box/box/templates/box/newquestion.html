@@ -1,0 +1,14 @@
+% extends "question_box/base.html" %}
+
+{% block content %}
+
+<form role='form' method="POST" action="">
+    {% csrf_token %}
+    {{ form.as_p }}
+{{ question.title }}
+{{ question.text }}
+<br>
+ <button type="submit">Submit New Question</button>
+
+</form>
+{% endblock %}
