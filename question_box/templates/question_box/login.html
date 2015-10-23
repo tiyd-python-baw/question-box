@@ -1,13 +1,11 @@
 {% extends "admin/base_site.html" %}
 {% load bootstrap3 %}
-{% load bootstrap_themes %}
 {% load i18n admin_static %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 {% bootstrap_messages %}
-{% bootstrap_styles theme='slate' type='css'%}
 {# {% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/login.css" %}" />#}
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="https://bootswatch.com/slate/bootstrap.css" />
+{% block extrastyle %}
 {{ form.media }}
 {% endblock %}
 
