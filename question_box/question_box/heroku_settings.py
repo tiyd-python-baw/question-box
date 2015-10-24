@@ -2,7 +2,7 @@ from .settings import *
 import os
 import dj_database_url
 
-DEBUG = bool(int(os.environ.get('DEBUG', False)))
+DEBUG = False
 SECRET_KEY = os.environ['SECRET_KEY']
 
 BLACKLIST_APPS = ['debugtoolbar', 'django_extensions']
@@ -11,7 +11,7 @@ INSTALLED_APPS = tuple([app for app in INSTALLED_APPS if app not in BLACKLIST_AP
 
 DATABASES['default'] = dj_database_url.config()
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROXY', 'https')
 
 ALLOWED_HOSTS = ['*']
 
@@ -21,8 +21,6 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
 
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'question_box/static'),
+    os.path.join(BASE_DIR, 'static'),
 )
