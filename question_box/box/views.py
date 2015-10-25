@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
-from .models import Question, Answers, Score
+from .models import Question, Answers, Score, Tag
 from .forms import NewQuestionForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
@@ -116,3 +116,13 @@ def new_question(request):
     else:
         form = NewQuestionForm()
     return render(request, 'box/newquestion.html', {'form': form})
+
+
+class TagPage(ListView):
+    template_name = 'box/tag_page.html'
+    context_object_name = 'questions'
+    paginate_by = 20
+
+    def get_queryset(self):
+        self.tag = get_object_or_404(Tag, name=self.kwargs['pk'])
+        return self.tag.questions.all()
