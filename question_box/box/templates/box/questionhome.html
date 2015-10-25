@@ -3,7 +3,7 @@
 {% block content %}
 <ul>
   {% for question in questions %}
-  <li>  <a href="{% url 'question_detail' question.pk %}">{{ question.title }}</a> - {{ question.points_q }} points</li>
+  <li>  <a href="{% url 'question_detail' question.pk %}">{{ question.title }}</a>- asked by {{ question.user }}</li>
   {% endfor %}
 </ul>
 {% bootstrap_pagination page_obj %}

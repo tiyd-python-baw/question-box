@@ -65,11 +65,14 @@ def question_detail(request, question_pk):
                 request.user.score.points -=1
                 request.user.score.save()
             else:
-                new_answer = Answers(text=answer_text,
-                                    timestamp=datetime.now(),
-                                    question = question,
-                                    user=request.user)
-                new_answer.save()
+                try:
+                     answer = Answers.objects.get(question=question_pk, user=request.user)
+                except:
+                    new_answer = Answers(text=answer_text,
+                                        timestamp=datetime.now(),
+                                        question = question,
+                                        user=request.user)
+                    new_answer.save()
             return render(request, 'box/question_detail.html', {'question':question,
                                                         'answers': answers})
     return render (request, 'box/question_detail.html', {'question':question,
