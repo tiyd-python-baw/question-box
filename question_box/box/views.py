@@ -108,6 +108,7 @@ def new_question(request):
             question = form.save(commit=False)
             question.user = request.user
             question.save()
+            form.save_m2m()
             s = request.user.score
             s.points += 5
             s.save()
