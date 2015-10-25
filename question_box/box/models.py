@@ -15,6 +15,7 @@ class Answers(models.Model):
     timestamp = models.DateTimeField(default=datetime.now())
     question = models.ForeignKey(Question)
     user = models.ForeignKey(User)
+    voter = models.ForeignKey(User, null = True, related_name='voter')
     points_a =models.IntegerField(default=0)
 
 class Score(models.Model):

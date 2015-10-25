@@ -49,25 +49,41 @@ def question_detail(request, question_pk):
             answer_text = request.POST.get('new_answer', False)
             if vote == 'upvote':
                 answer = Answers.objects.get(pk=request.POST['answer_object'])
-                answer.points_a +=1
-                answer.save()
-                answer.user.score.points +=10
-                answer.user.score.save()
+                #import pdb; pdb.set_trace()
+
+                if answer.voter == request.user:
+                    #import pdb; pdb.set_trace()
+                    return render(request, 'box/question_detail.html', {'question':question,
+                                                                'answers': answers})
+                else:
+                    answer.voter = request.user
+                    answer.save()
+                    answer.points_a +=1
+                    answer.save()
+                    answer.user.score.points +=10
+                    answer.user.score.save()
             elif vote =='downvote':
                 answer = Answers.objects.get(pk=request.POST['answer_object'])
-                answer.points_a -=1
-                answer.save()
-                answer.user.score.points -=5
-                answer.user.score.save()
-                request.user.score.points -=1
-                request.user.score.save()
+                if answer.voter == request.user:
+                    #import pdb; pdb.set_trace()
+                    return render(request, 'box/question_detail.html', {'question':question,
+                                                                'answers': answers})
+                else:
+                    answer.voter = request.user
+                    answer.save()
+                    answer.points_a -=1
+                    answer.save()
+                    answer.user.score.points -=5
+                    answer.user.score.save()
+                    request.user.score.points -=1
+                    request.user.score.save()
             else:
                     try:
                         answer = Answers.objects.get(question=question_pk, user=request.user)
                     #     messages.add_message(request, messages.ERROR, "You've already answered this question!")
-                    #     return render(request, 'box/question_detail.html', {'question':question,
-                    #                                              'answers': answers,
-                    #                                              'messages': messages})
+                        return render(request, 'box/question_detail.html', {'question':question,
+                                                                  'answers': answers,
+                                                                  'messages': messages})
                     except:
                         new_answer = Answers(text=answer_text,
                                         timestamp=datetime.now(),
