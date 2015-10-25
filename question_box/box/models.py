@@ -8,8 +8,7 @@ class Question(models.Model):
     text = models.TextField(max_length=1000, null=True, blank=True)
     timestamp = models.DateTimeField(default=datetime.now())
     user = models.ForeignKey(User)
-    points_q = models.IntegerField(default=0)
-
+    tags = models.ManyToManyField('Tag', related_name='questions')
 class Answers(models.Model):
     text = models.TextField(max_length=1000)
     timestamp = models.DateTimeField(default=datetime.now())
@@ -21,3 +20,9 @@ class Answers(models.Model):
 class Score(models.Model):
     points = models.IntegerField(default=0)
     user = models.OneToOneField(User)
+
+class Tag(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name

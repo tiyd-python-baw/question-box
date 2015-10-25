@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from box.views import UserPage, AllQuestionsView
+from box.views import UserPage, AllQuestionsView, TagPage
 
 
 urlpatterns = [
@@ -27,5 +27,6 @@ urlpatterns = [
     url(r'^register', 'box.views.register_user', name='register_user'),
     url(r'^new', 'box.views.new_question', name='newquestion'),
     url(r'^home/(?P<pk>[\w.]+)', UserPage.as_view(), name='home_page'),
+    url(r'^tags/(?P<pk>\w+)', TagPage.as_view(), name='tag_page'),
     url(r'^$', AllQuestionsView.as_view(), name='questions'),
 ]
