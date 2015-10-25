@@ -3,14 +3,11 @@ from django.shortcuts import render, redirect
 from .models import Question, Answers, Score
 from .forms import NewQuestionForm
 from django.contrib.auth.decorators import login_required
-
-# Create your views here.
-
 from django.views.generic import ListView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
-
+from django.contrib import messages
 from itertools import chain
 
 from datetime import datetime
@@ -65,11 +62,18 @@ def question_detail(request, question_pk):
                 request.user.score.points -=1
                 request.user.score.save()
             else:
-                new_answer = Answers(text=answer_text,
-                                    timestamp=datetime.now(),
-                                    question = question,
-                                    user=request.user)
-                new_answer.save()
+                    try:
+                        answer = Answers.objects.get(question=question_pk, user=request.user)
+                    #     messages.add_message(request, messages.ERROR, "You've already answered this question!")
+                    #     return render(request, 'box/question_detail.html', {'question':question,
+                    #                                              'answers': answers,
+                    #                                              'messages': messages})
+                    except:
+                        new_answer = Answers(text=answer_text,
+                                        timestamp=datetime.now(),
+                                        question = question,
+                                        user=request.user)
+                        new_answer.save()
             return render(request, 'box/question_detail.html', {'question':question,
                                                         'answers': answers})
     return render (request, 'box/question_detail.html', {'question':question,
