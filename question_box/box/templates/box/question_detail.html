@@ -3,8 +3,13 @@
 {% block content %}
 
 
-{{ question.title }}<br>
-{{ question.text }}<p>
+<h2>{{ question.title }}</h2>
+<p>{{ question.text }}</p>
+{% if question.tags.all %}
+  {% for tag in question.tags.all %}
+  <p>{{tag}}</p>
+  {% endfor %}
+{% endif %}
   <p>Asked by <a href="{% url 'home_page' question.user.username %}">{{ question.user }}</a> at {{ question.timestamp }}<br>
 
 <br><br>{% for answer in answers %}
