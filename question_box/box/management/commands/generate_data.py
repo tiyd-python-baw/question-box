@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
-from box.models import Score, Question, Answers
+from box.models import Score, Question,
 
 
 def generate_users():
@@ -62,6 +62,7 @@ def generate_tags():
         tags.append(tag)
     with open('./box/fixtures/tags.json','w') as f:
         f.write(json.dumps(tags))
+
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
