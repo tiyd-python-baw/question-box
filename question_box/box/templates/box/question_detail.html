@@ -20,6 +20,11 @@ Score: {{ answer.points_a }}
 
 
 {% endfor %}
+{% if messages %}
+{% for message in messages %}
+{{ message }}
+{% endfor %}
+{% endif %}
 <br><br>
 <form name="new_answer" method="POST">
   {% csrf_token %}
