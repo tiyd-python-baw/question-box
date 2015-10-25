@@ -52,8 +52,20 @@ def generate_answers():
     with open('./box/fixtures/answers.json', 'w') as f:
         f.write(json.dumps(answers))
 
+def generate_tags():
+    import json
+    tags = []
+    from .tag_list import tag_list
+    for x in range(len(tag_list)):
+        tag = {'fields':{'name':tag_list[x]},
+                'model':'box.Tag'}
+        tags.append(tag)
+    with open('./box/fixtures/tags.json','w') as f:
+        f.write(json.dumps(tags))
+
 class Command(BaseCommand):
     def handle(self, *args, **options):
         generate_users()
         # generate_questions()
         # generate_answers()
+        # generate_tags()

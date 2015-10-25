@@ -1,0 +1,11 @@
+{% extends "question_box/base.html" %}
+{% load bootstrap3 %}
+{% block content %}
+<h1>{{view.tag.name}}</h1>
+<ul>
+{% for question in questions %}
+  <li><a href="{% url 'question_detail' question.pk %}">{{question.title}}</a>{{question.timestamp}}</li>
+{% endfor %}
+</ul>
+{% bootstrap_pagination page_obj %}
+{% endblock %}
