@@ -51,12 +51,11 @@ def question_detail(request, question_pk):
                 answer = Answers.objects.get(pk=request.POST['answer_object'])
                 #import pdb; pdb.set_trace()
 
-                try:
-                    answer1 = Answers.objects.get(voter= request.user, question= question_pk)
+                if answer.voter == request.user:
                     #import pdb; pdb.set_trace()
                     return render(request, 'box/question_detail.html', {'question':question,
                                                                 'answers': answers})
-                except:
+                else:
                     answer.voter = request.user
                     answer.save()
                     answer.points_a +=1
@@ -65,12 +64,11 @@ def question_detail(request, question_pk):
                     answer.user.score.save()
             elif vote =='downvote':
                 answer = Answers.objects.get(pk=request.POST['answer_object'])
-                try:
-                    answer1 = Answers.objects.get(voter= request.user, question= question_pk)
+                if answer.voter == request.user:
                     #import pdb; pdb.set_trace()
                     return render(request, 'box/question_detail.html', {'question':question,
                                                                 'answers': answers})
-                except:
+                else:
                     answer.voter = request.user
                     answer.save()
                     answer.points_a -=1
