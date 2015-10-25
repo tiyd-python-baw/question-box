@@ -9,12 +9,13 @@ class Question(models.Model):
     timestamp = models.DateTimeField(default=datetime.now())
     user = models.ForeignKey(User)
     tags = models.ManyToManyField('Tag', related_name='questions')
+
 class Answers(models.Model):
     text = models.TextField(max_length=1000)
     timestamp = models.DateTimeField(default=datetime.now())
     question = models.ForeignKey(Question)
     user = models.ForeignKey(User)
-    voter = models.ForeignKey(User, null = True, related_name='voter')
+    voter = models.ForeignKey(User, null=True, related_name='voter')
     points_a =models.IntegerField(default=0)
 
 class Score(models.Model):
