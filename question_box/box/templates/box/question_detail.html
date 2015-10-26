@@ -2,12 +2,17 @@
 {% load bootstrap3 %}
 {% block content %}
 
-
+<div class="panel panel-primary">
+  <div class="panel-heading">
 <h2>{{ question.title }}</h2>
+  </div>
+  <div class="panel-body">
 <p>{{ question.text }}</p>
+</div>
+</div>
 {% if question.tags.all %}<p>
   {% for tag in question.tags.all %}
-  <a href="{% url 'tag_page' tag.name %}"class='btn'>{{tag}}</a>
+  <a href="{% url 'tag_page' tag.name %}"class='btn btn-primary'>{{tag}}</a>
   {% endfor %}</p>
 {% endif %}
   <p>Asked by <a href="{% url 'home_page' question.user.username %}">{{ question.user }}</a> at {{ question.timestamp }}<br>
