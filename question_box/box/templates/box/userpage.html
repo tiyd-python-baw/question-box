@@ -4,14 +4,23 @@
 <h1>{{view.user}}</h1>
 <h3>{{view.points}}</h3>
 <p>{{view.user.email}}</p>
-<ul>
+<table class="table table-hover">
+  <tr>
+    <th>Question or Answer</th>
+    <th>Question text</th>
+    <th>Timestamp</th>
+  </tr>
+  <tb>
 {% for object in q_a %}
+<tr>
   {% if object.title %}
-  <li><a href="{% url 'question_detail' object.pk %}">{{object.title}}</a>{{object.timestamp}}</li>
+  <td>Question</td><td><a href="{% url 'question_detail' object.pk %}">{{object.title}}</a></td><td>{{object.timestamp}}</td>
   {% else %}
-  <li>Answer to <a href="{% url 'question_detail' object.question.pk %}">{{object.question.title}}</a> at {{object.timestamp}}</li>
+  <td>Answer</td><td><a href="{% url 'question_detail' object.question.pk %}">{{object.question.title}}</a></td><td> {{object.timestamp}}</td>
   {% endif %}
+</tr>
 {% endfor %}
-</ul>
+</tb>
+</table>
 {% bootstrap_pagination page_obj %}
 {% endblock %}

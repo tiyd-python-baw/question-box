@@ -5,23 +5,24 @@
 
 <h2>{{ question.title }}</h2>
 <p>{{ question.text }}</p>
-{% if question.tags.all %}
+{% if question.tags.all %}<p>
   {% for tag in question.tags.all %}
-  <p><a href="{% url "tag_page" tag.name %}">{{tag}}</a></p>
-  {% endfor %}
+  <a href="{% url 'tag_page' tag.name %}"class='btn'>{{tag}}</a>
+  {% endfor %}</p>
 {% endif %}
   <p>Asked by <a href="{% url 'home_page' question.user.username %}">{{ question.user }}</a> at {{ question.timestamp }}<br>
 
 <br><br>{% for answer in answers %}
--- {{ answer.text }}<br><br>
--<a href="{% url 'home_page' answer.user.username %}">{{ answer.user }}</a>({{ answer.user.score.points }}) at {{ answer.timestamp }}<br>
-Score: {{ answer.points_a }}
-<form method="post">
+<div class="panel panel-primary">
+  <div class="panel-title">{{ answer.text }}</div>
+  <div class="panel-body"><a href="{% url 'home_page' answer.user.username %}">{{ answer.user }}</a>({{ answer.user.score.points }}) at {{ answer.timestamp }}</div>
+<div class="panel-footer">Score:{{answer.points_a}}<form method="post">
   {% csrf_token %}
-  <button name="vote" type="submit" value="upvote">UPVOTE</button>
-  <button name="vote" type="submit" value="downvote">DOWNVOTE</button>
+  <button name="vote" type="submit" value="upvote" class="btn btn-default">UPVOTE</button>
+  <button name="vote" type="submit" value="downvote" class="btn btn-default">DOWNVOTE</button>
   <input type="hidden" name="answer_object" value={{ answer.pk }}>
-</form>
+</form></div>
+</div><br><br>
 
 
 {% endfor %}

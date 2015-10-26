@@ -1,10 +1,21 @@
 {% extends "question_box/base.html" %}
 {% load bootstrap3 %}
 {% block content %}
-<ul>
+<table class="table table-hover">
+  <tr>
+    <th>Question</th>
+    <th>User</th>
+    <th>Tags</th>
+  </tr>
+  <tb>
   {% for question in questions %}
-  <li>  <a href="{% url 'question_detail' question.pk %}">{{ question.title }}</a>- asked by {{ question.user }}</li>
+  <tr>
+  <td><a href="{% url 'question_detail' question.pk %}">{{ question.title }}</a></td>
+  <td><a href="{% url 'home_page' question.user.username %}"> {{ question.user }}</a></td>
+  <td>{% for tag in question.tags.all %} <a href="{% url 'tag_page' tag.name %}" class="btn btn-default">{{tag.name}}</a>{% endfor %}</td>
+</tr>
   {% endfor %}
-</ul>
+</tb>
+</table>
 {% bootstrap_pagination page_obj %}
 {% endblock %}
